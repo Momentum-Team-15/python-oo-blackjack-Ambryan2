@@ -14,15 +14,15 @@ class Game:
         self.card = self.deck[random.choice(range(0,len(self.deck)))]
         self.hand.append(self.card)
         if self.card[3] == 'A':
-            self.points = 0
+            # self.points = 0
             print(self.hand)
             answer = int(input(f"{self.player} do you want ace to be 1 or 11? "))
             self.points = answer
         elif self.card[3] == 'J' or self.card[3] == 'Q' or self.card[3] == 'K':
-            self.points = 0
+            # self.points = 0
             self.points = 10
         else:
-            self.points = 0
+            # self.points = 0
             self.points = int(self.card[3:len(self.card)])
         self.score += self.points
         if self.card in self.deck:
