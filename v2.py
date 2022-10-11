@@ -37,7 +37,7 @@ for symbol in suits:
         deck.append(f"{symbol}{rank}")
 # Players involved
 player_1 = "Dealer"
-player_2 = "Player"
+player_2 = input("What is your name: ")
 
 dealer = Game(deck, player_1)
 player = Game(deck, player_2)
@@ -49,7 +49,7 @@ while len(dealer.hand) < 2 or len(dealer.hand) < 2:
 
 #prints cards that were given
 print(f"Dealer hand {dealer.hand}: Score = {dealer.score}")
-print(f"Player hand {player.hand} Score = {player.score}") 
+print(f"{player.player} hand {player.hand} Score = {player.score}") 
 print(len(dealer.deck))
 
 #Dealer plays if score less than 17 based on rules
