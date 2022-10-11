@@ -53,6 +53,8 @@ class Player:
         self.name = input(f"Player {Player.player_count} enter your name: ")
         Player.player_count += 1
 
+# this is the beginning of the game
+
 standard = Deck(['❤️', '♦️', '♠️', '♣️'],['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'])
 
 # this is first card in deck
