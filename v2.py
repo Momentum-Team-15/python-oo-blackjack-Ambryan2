@@ -76,8 +76,6 @@ if p_score > 21:
     print('You lost because you busted!')
 elif (p_score <= 21 and p_score > d_score) or (d_score > 21 and p_score < 21):
     print('You Won!!!')
-# elif d_score > 21 and p_score < 21:
-#     print('You Won!!')
 elif d_score == p_score:
     print('Tie Game')
 else:
