@@ -25,8 +25,8 @@ class Game:
             self.points = 0
             self.points = int(self.card[3:len(self.card)])
         self.score += self.points
-        if dealer.card in self.deck:
-            self.deck.remove(dealer.card)
+        if self.card in self.deck:
+            self.deck.remove(self.card)
         
 # makes deck
 suits = ['❤️ ', '♦️ ', '♠️ ', '♣️ ']
@@ -76,3 +76,12 @@ elif dealer.score == player.score:
     print('Tie Game')
 else:
     print('You lost')
+
+# print()
+# print(len(dealer.deck))
+# print(dealer.hand)
+# print(dealer.deck)
+# print()
+# print(len(player.deck))
+# print(player.hand)
+# print(player.deck)
