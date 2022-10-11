@@ -30,48 +30,62 @@ class Deck:
         for symbol in suits:
             for rank in ranks:
                 self.deck.append(f"{symbol}{rank}")
-
-# makes deck
-deck = Deck(['♥️ ', '♦️ ', '♠️ ', '♣️ '],['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'])
-new_deck = deck.deck
+game = input('Do you want to play blackjack (yes or no): ').lower()
 
 player_1 = "Dealer"
+p1_wins = 0
+
 player_2 = input("What is your name: ")
+p2_wins = 0
 
-dealer = Game(new_deck, player_1)
-player = Game(new_deck, player_2)
 
-# give player two cards
-while len(dealer.hand) < 2 or len(dealer.hand) < 2:
-    dealer.draw_card()
-    player.draw_card()
+while game != 'no':
+# makes deck
+    deck = Deck(['♥️ ', '♦️ ', '♠️ ', '♣️ '],['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'])
+    new_deck = deck.deck
 
-#prints cards that were given
-print(f"Dealer hand {dealer.hand}: Score = {dealer.score}")
-print(f"{player.player} hand {player.hand} Score = {player.score}") 
-# print(len(dealer.deck))
+    # this puts these players in the game
+    dealer = Game(new_deck, player_1)
+    player = Game(new_deck, player_2)
 
-#Dealer plays if score less than 17 based on rules
-if dealer.score < 17:
-    print("Dealer gets to play")
-    while dealer.score < 17:
+    # give player two cards
+    while len(dealer.hand) < 2 or len(dealer.hand) < 2:
         dealer.draw_card()
-    print(f"Dealer hand {dealer.hand}: Score = {dealer.score}")
-
-# player gets to play now if the so choose
-answer = ''
-while answer != 'NO' and player.score < 21:
-    answer = input(f"{player.player} do you want to play (yes or no): ").upper()
-    if answer == 'YES':
         player.draw_card()
-        print(f"Player hand {player.hand} Score = {player.score}") 
 
-# determines the outcome
-if player.score > 21:
-    print('You lost because you busted!')
-elif (player.score <= 21 and player.score > dealer.score) or (dealer.score > 21 and player.score <= 21):
-    print('You Won!!!')
-elif dealer.score == player.score:
-    print('Tie Game')
-else:
-    print('You lost')
+    #prints cards that were given
+    print(f"Dealer hand {dealer.hand}: Score = {dealer.score}")
+    print(f"{player.player} hand {player.hand} Score = {player.score}") 
+    # print(len(dealer.deck))
+
+    #Dealer plays if score less than 17 based on rules
+    if dealer.score < 17:
+        print("Dealer gets to play")
+        while dealer.score < 17:
+            dealer.draw_card()
+        print(f"Dealer hand {dealer.hand}: Score = {dealer.score}")
+
+    # player gets to play now if the so choose
+    answer = ''
+    while answer != 'NO' and player.score < 21:
+        answer = input(f"{player.player} do you want another card (yes or no): ").upper()
+        if answer == 'YES':
+            player.draw_card()
+            print(f"Player hand {player.hand} Score = {player.score}") 
+
+    # determines the outcome
+    if player.score > 21:
+        print('You lost because you busted!')
+        p1_wins += 1
+    elif (player.score <= 21 and player.score > dealer.score) or (dealer.score > 21 and player.score <= 21):
+        print('You Won!!!')
+        p2_wins += 1
+    elif dealer.score == player.score:
+        print('Tie Game')
+    else:
+        print('You lost')
+        p1_wins += 1
+    print()
+    print(f"Dealer has won {p1_wins}\nYou have won {p2_wins}")
+    print()
+    game = input('Do you want to continue playing (yes or no): ').lower()
