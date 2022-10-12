@@ -114,16 +114,16 @@ while game != 'no':
     print("Before we begin why don't we make this a little more interesting...")
     the_gambler = input("Want to bet $10 for a chance to get $15, yes or no? ").lower()
 
+    print()
+    # player gets to play now if they so choose
+    player.play_turn()
+    
     #Dealer plays if score less than 17 based on rules
     if dealer.score < 17:
         while dealer.score < 17:
             dealer.draw_card()
             dealer.calculate_score()
     
-    print()
-    # player gets to play now if they so choose
-    player.play_turn()
-
     print(f"Dealer hand {dealer.hand}: Score = {dealer.score}")
     print()
     print(f"{player.player} hand {player.hand} Score = {player.score}") 
