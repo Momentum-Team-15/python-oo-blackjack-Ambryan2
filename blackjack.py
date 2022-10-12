@@ -1,118 +1,136 @@
-# import random
-# from tokenize import Number
-# from tracemalloc import start
-# # Write your blackjack game here.
-# class Game:
-#     start = []
-#     def __init__ (self, deck, card, points):
-#         self.deck = deck
-#         self.card = card
-#         self.points = 0
-#         # self.points = points
-#         if points == [1,11]:
-#             answer = int(input(f"Do you want ace to be 1 or 11? "))
-#             if answer == 1:
-#                 self.points = 1
-#             else:
-#                 self.points = 11
-#         else:
-#             self.points += int(points)
+import random
 
-#     def remove_card(self, item):
-#         if item in self.deck:
-#             self.deck.remove(item)
+class Game:
+    def __init__(self, deck, player):
+        self.deck = deck
+        self.points = 0
+        self.player = player
+        self.hand = []
+        self.score = 0
 
-# class Deck:
-#     def __init__ (self, suits, ranks):
-#         self.suits = suits
-#         self.ranks = ranks
-#         self.deck = []
-#         for suit in self.suits:
-#             for rank in self.ranks:
-#                 self.deck.append(f"{suit}{rank}") 
+    # note need to draw card first when calling
+    def draw_card(self): #, item, all_cards):
+        self.card = self.deck[random.choice(range(0,len(self.deck)))]
+        self.hand.append(self.card)
+        if self.card[3] == 'A':
+            print(self.hand)
+            answer = int(input(f"{self.player} do you want ace to be 1 or 11? "))
+            self.points = answer
+        elif self.card[3] == 'J' or self.card[3] == 'Q' or self.card[3] == 'K':
+            self.points = 10
+        else:
+            self.points = int(self.card[3:len(self.card)])
+        self.score += self.points
+        if self.card in self.deck:
+            self.deck.remove(self.card)
+    
+    def deal_two(self):
+        while len(self.hand) < 2:
+            self.draw_card()
 
-# class Card:
-#     possible = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K']
+class Deck:
+    def __init__(self,suits, ranks):
+        self.deck = []
+        for symbol in suits:
+            for rank in ranks:
+                self.deck.append(f"{symbol}{rank}")
 
-#     def __init__(self, array):
-#         self.card = array[random.choice(range(0,len(array)))]
-#         self.value = 0
-#         # need to assign value to each card
-#         for value in Card.possible:
-#             if self.card[2] == 'A':
-#                 self.value = [1,11] #have dealer ask question then it picks 
-#             elif self.card[2] == 'J' or self.card[2] == 'Q' or self.card[2] == 'K':
-#                 self.value = 10
-#             else:
-#                 self.value = self.card[2:len(self.card)]
+class Player:
+    def __init__(self, name = 'Dealer'):
+        self.name = name
+        self.money = 100
+        self.wins = 0
+    
+    def ask_name(self):
+        name = input('What is your name? ')
+        self.name = name
+    
+    def won_game(self):
+        self.wins += 1
 
-# class Player:
-#     player_count = 1
+    def lost_bet(self):
+        print('Better luck next time')
+        self.money -= 10
+    
+    def won_bet(self):
+        print('You got lucky this time')
+        self.money += 10
+    
+game = input('Do you want to play blackjack (yes or no): ').lower()
 
-#     def __init__(self):
-#         self.name = input(f"Player {Player.player_count} enter your name: ")
-#         Player.player_count += 1
+bot = Player() 
+you = Player()
+you.ask_name()
+print(f"Nice to meet you {you.name}!")
+print()
+while game != 'no':
+    print("Before we begin why don't we make this a little more interesting...")
+    the_gambler = input("Want to make a wager, yes or no? ").lower()
+# makes deck
+    deck = Deck(['♥️ ', '♦️ ', '♠️ ', '♣️ '],['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'])
+    new_deck = deck.deck
 
-# # this is the beginning of the game
+    # this puts these players in the game
+    dealer = Game(new_deck, bot.name)
+    player = Game(new_deck, you.name)
 
-# standard = Deck(['❤️', '♦️', '♠️', '♣️'],['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'])
+    # give player two cards
+    dealer.deal_two()
+    player.deal_two()
 
-# # this is first card in deck
-# c = Card(standard.deck)
-# blackjack = Game(standard.deck,c.card, c.value)
+    #prints cards that were given
+    print(f"Dealer hand {dealer.hand}: Score = {dealer.score}")
+    print(f"{player.player} hand {player.hand} Score = {player.score}") 
 
-# # deal cards to each player
-# player_cards = []
-# player_points = 0
-# dealer_cards = []
-# dealer_points = 0
-# count = 0
+    print()
+    #Dealer plays if score less than 17 based on rules
+    if dealer.score < 17:
+        print("Dealer gets to play")
+        while dealer.score < 17:
+            dealer.draw_card()
+        print(f"Dealer hand {dealer.hand}: Score = {dealer.score}")
 
-# while len(player_cards) < 2:
-#     player_cards.append(blackjack.card)
-#     player_points += blackjack.points
-#     blackjack.remove_card(c.card)
-#     c = Card(standard.deck)
-#     blackjack = Game(standard.deck,c.card, c.value)
+    print()
+    # player gets to play now if the so choose
+    answer = ''
+    while answer != 'NO' and player.score < 21:
+        answer = input(f"{player.player} do you want another card (yes or no): ").upper()
+        if answer == 'YES':
+            player.draw_card()
+            print(f"Player hand {player.hand} Score = {player.score}") 
 
-# while len(dealer_cards) < 2:
-#     dealer_cards.append(blackjack.card)
-#     dealer_points += blackjack.points
-#     blackjack.remove_card(c.card)
-#     c = Card(standard.deck)
-#     blackjack = Game(standard.deck,c.card, c.value)
+    # determines the outcome if no gamble
+    
+    if the_gambler == 'no':
+        if player.score > 21:
+            print('You lost because you busted!')
+            bot.won_game() 
+        elif (player.score <= 21 and player.score > dealer.score) or (dealer.score > 21 and player.score <= 21):
+            print('You Won!!!')
+            you.won_game()
+        elif dealer.score == player.score:
+            print('Tie Game')
+        else:
+            print('You lost')
+            bot.won_game()
+    else:
+        if player.score > 21:
+            print('You lost because you busted!')
+            bot.won_game()
+            you.lost_bet()
+        elif (player.score <= 21 and player.score > dealer.score) or (dealer.score > 21 and player.score <= 21):
+            print('You Won!!!')
+            you.won_game()
+            you.won_bet()
+        elif dealer.score == player.score:
+            print('Tie Game')
+        else:
+            print('You lost')
+            bot.won_game()
+            you.lost_bet()
+    print()
+    print(f"Dealer has won {bot.wins}\nYou have won {you.wins}")
+    print()
+    print(f"Your money ${you.money}")
+    game = input('Do you want to continue playing (yes or no): ').lower()
 
-
-# print(f"Players cards: {' '.join(player_cards)} which equals {player_points}\nDealer Cards: {' '.join(dealer_cards)} which equals {dealer_points}")
-
-# # This is for the dealer's turn if points less than 17
-# if dealer_points < 17:
-#     print(f"Dealer now plays ...")
-#     while dealer_points < 17:
-#         dealer_cards.append(blackjack.card)
-#         dealer_points += blackjack.points
-#         blackjack.remove_card(c.card)
-#         c = Card(standard.deck)
-#         blackjack = Game(standard.deck,c.card, c.value)
-#     print(f"Dealer cards are {' '.join(dealer_cards)} and points are {dealer_points}")
-
-# # while loop that ask if player wants to hit unless they decide not
-# ask = ''
-# while ask != "no" and player_points < 22:
-#     print(f"Your points are {player_points}")
-#     ask = input("Do you want to continue? ").lower()
-#     if ask == 'yes':
-#         player_cards.append(blackjack.card)
-#         player_points += blackjack.points
-#         blackjack.remove_card(c.card)
-#         c = Card(standard.deck)
-#         blackjack = Game(standard.deck,c.card, c.value)
-
-# if player_points > 21:
-#     print('Busted')
-# elif player_points < 21 and player_points > dealer_points:
-#     print('You Won!!!')
-# elif dealer_points > 21 and player_points < 21:
-#     print('You Won!!')
-# else:
-#     print('You lost')
