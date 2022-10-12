@@ -78,7 +78,7 @@ class Player:
     
     def won_bet(self):
         print('You got lucky this time')
-        self.money += 20
+        self.money += 15
     
 game = input('Do you want to play blackjack (yes or no): ').lower()
 
@@ -89,7 +89,7 @@ you.ask_name()
 print()
 while game != 'no':
     print("Before we begin why don't we make this a little more interesting...")
-    the_gambler = input("Want to bet $10 for a chance to double it, yes or no? ").lower()
+    the_gambler = input("Want to bet $10 for a chance to get $15, yes or no? ").lower()
 # makes deck
     deck = Deck(['♥️ ', '♦️ ', '♠️ ', '♣️ '],['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'])
     new_deck = deck.deck
@@ -126,10 +126,13 @@ while game != 'no':
             you.won_bet()
         else:
             you.lost_bet()
-        
-    print(f"Your money ${you.money}")
-    print()
-    print(f"Dealer has won {bot.wins}\nYou have won {you.wins}")
-    print()
-    game = input('Do you want to continue playing (yes or no): ').lower()
+    if you.money > -30:   
+        print(f"Your money ${you.money}")
+        print()
+        print(f"Dealer has won {bot.wins}\nYou have won {you.wins}")
+        print()
+        game = input('Do you want to continue playing (yes or no): ').lower()
+    else:
+        print("\n You owe too much money! Get out of the Casino!!!")
+        game = 'no'
 
