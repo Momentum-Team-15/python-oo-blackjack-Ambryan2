@@ -7,6 +7,7 @@ class Game:
         self.player = player
         self.hand = []
         self.score = 0
+        self.win = 0
 
     # note need to draw card first when calling
     def draw_card(self): #, item, all_cards):
@@ -27,6 +28,20 @@ class Game:
     def deal_two(self):
         while len(self.hand) < 2:
             self.draw_card()
+    
+    def determine_winner(self, dealer):
+        if self.score > 21:
+            print('You lost because you busted!')
+            bot.won_game() 
+        elif (self.score <= 21 and self.score > dealer.score) or (dealer.score > 21 and self.score <= 21):
+            print('You Won!!!')
+            you.won_game()
+            self.win = 1
+        elif dealer.score == self.score:
+            print('Tie Game')
+        else:
+            print('You lost')
+            bot.won_game()
 
 class Deck:
     def __init__(self,suits, ranks):
@@ -38,7 +53,7 @@ class Deck:
 class Player:
     def __init__(self, name = 'Dealer'):
         self.name = name
-        self.money = 100
+        self.money = 0
         self.wins = 0
     
     def ask_name(self):
@@ -54,7 +69,7 @@ class Player:
     
     def won_bet(self):
         print('You got lucky this time')
-        self.money += 10
+        self.money += 20
     
 game = input('Do you want to play blackjack (yes or no): ').lower()
 
@@ -65,7 +80,7 @@ print(f"Nice to meet you {you.name}!")
 print()
 while game != 'no':
     print("Before we begin why don't we make this a little more interesting...")
-    the_gambler = input("Want to make a wager, yes or no? ").lower()
+    the_gambler = input("Want to bet $10 for a chance to double it, yes or no? ").lower()
 # makes deck
     deck = Deck(['♥️ ', '♦️ ', '♠️ ', '♣️ '],['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'])
     new_deck = deck.deck
@@ -98,39 +113,19 @@ while game != 'no':
         if answer == 'YES':
             player.draw_card()
             print(f"Player hand {player.hand} Score = {player.score}") 
-
-    # determines the outcome if no gamble
     
-    if the_gambler == 'no':
-        if player.score > 21:
-            print('You lost because you busted!')
-            bot.won_game() 
-        elif (player.score <= 21 and player.score > dealer.score) or (dealer.score > 21 and player.score <= 21):
-            print('You Won!!!')
-            you.won_game()
-        elif dealer.score == player.score:
-            print('Tie Game')
-        else:
-            print('You lost')
-            bot.won_game()
-    else:
-        if player.score > 21:
-            print('You lost because you busted!')
-            bot.won_game()
-            you.lost_bet()
-        elif (player.score <= 21 and player.score > dealer.score) or (dealer.score > 21 and player.score <= 21):
-            print('You Won!!!')
-            you.won_game()
+    player.determine_winner(dealer)
+    # determines the outcome
+    if the_gambler == 'yes':
+        # print('test worked')
+        if player.win == 1:
             you.won_bet()
-        elif dealer.score == player.score:
-            print('Tie Game')
         else:
-            print('You lost')
-            bot.won_game()
             you.lost_bet()
+        
+    print(f"Your money ${you.money}")
     print()
     print(f"Dealer has won {bot.wins}\nYou have won {you.wins}")
     print()
-    print(f"Your money ${you.money}")
     game = input('Do you want to continue playing (yes or no): ').lower()
 
