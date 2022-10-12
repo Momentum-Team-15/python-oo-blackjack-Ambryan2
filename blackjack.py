@@ -28,6 +28,14 @@ class Game:
     def deal_two(self):
         while len(self.hand) < 2:
             self.draw_card()
+
+    def play_turn(self):
+        answer = ''
+        while answer != 'NO' and self.score < 21 and dealer.score <= 21:
+            answer = input(f"{self.player} do you want another card (yes or no): ").upper()
+            if answer == 'YES':
+                self.draw_card()
+                print(f"Player hand {self.hand} Score = {self.score}") 
     
     def determine_winner(self, dealer):
         if self.score > 21:
@@ -59,6 +67,7 @@ class Player:
     def ask_name(self):
         name = input('What is your name? ')
         self.name = name
+        print(f"Nice to meet you {self.name}!")
     
     def won_game(self):
         self.wins += 1
@@ -76,7 +85,7 @@ game = input('Do you want to play blackjack (yes or no): ').lower()
 bot = Player() 
 you = Player()
 you.ask_name()
-print(f"Nice to meet you {you.name}!")
+# print(f"Nice to meet you {you.name}!")
 print()
 while game != 'no':
     print("Before we begin why don't we make this a little more interesting...")
@@ -106,16 +115,12 @@ while game != 'no':
         print(f"Dealer hand {dealer.hand}: Score = {dealer.score}")
 
     print()
-    # player gets to play now if the so choose
-    answer = ''
-    while answer != 'NO' and player.score < 21:
-        answer = input(f"{player.player} do you want another card (yes or no): ").upper()
-        if answer == 'YES':
-            player.draw_card()
-            print(f"Player hand {player.hand} Score = {player.score}") 
+    # player gets to play now if they so choose
+    player.play_turn()
     
-    player.determine_winner(dealer)
+    print()
     # determines the outcome
+    player.determine_winner(dealer)
     if the_gambler == 'yes':
         # print('test worked')
         if player.win == 1:
