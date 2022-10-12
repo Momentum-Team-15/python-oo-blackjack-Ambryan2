@@ -9,18 +9,9 @@ class Game:
         self.score = 0
         self.win = 0
     # note need to draw card first when calling
-    def draw_card(self): #, item, all_cards):
+    def draw_card(self):
         self.card = self.deck[random.choice(range(0,len(self.deck)))]
         self.hand.append(self.card)
-        # if self.card[3] == 'A':
-        #     print(self.hand)
-        #     answer = int(input(f"{self.player} do you want ace to be 1 or 11? "))
-        #     self.points = answer
-        # elif self.card[3] == 'J' or self.card[3] == 'Q' or self.card[3] == 'K':
-        #     self.points = 10
-        # else:
-        #     self.points = int(self.card[3:len(self.card)])
-        # self.score += self.points
         if self.card in self.deck:
             self.deck.remove(self.card)
     
@@ -98,14 +89,13 @@ game = input('Do you want to play blackjack (yes or no): ').lower()
 bot = Player() 
 you = Player()
 you.ask_name()
-# print(f"Nice to meet you {you.name}!")
+
 print()
 while game != 'no':
 # makes deck
     deck = Deck(['♥️ ', '♦️ ', '♠️ ', '♣️ '],['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'])
     new_deck = deck.deck
 
-    # the_gambler ='no'
     # this puts these players in the game
     dealer = Game(new_deck, bot.name)
     player = Game(new_deck, you.name)
@@ -120,9 +110,6 @@ while game != 'no':
     print(f"Dealer hand {dealer.hand} ?: Score = {dealer.score}")
     print(f"{player.player} hand {player.hand} Score = {player.score}") 
 
-    # print()
-    # print("Before we begin why don't we make this a little more interesting...")
-    # the_gambler = input("Want to bet $10 for a chance to get $15, yes or no? ").lower()
     print()
     print("Before we begin why don't we make this a little more interesting...")
     the_gambler = input("Want to bet $10 for a chance to get $15, yes or no? ").lower()
