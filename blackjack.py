@@ -65,7 +65,7 @@ class Player:
         self.wins = 0
     
     def ask_name(self):
-        name = input('What is your name? ')
+        name = input('New player what is your name? ')
         self.name = name
         print(f"Nice to meet you {self.name}!")
     # probably put these in Game class
