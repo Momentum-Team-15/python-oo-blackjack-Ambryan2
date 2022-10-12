@@ -68,7 +68,7 @@ class Player:
         name = input('What is your name? ')
         self.name = name
         print(f"Nice to meet you {self.name}!")
-    
+    # probably put these in Game class
     def won_game(self):
         self.wins += 1
 
@@ -122,7 +122,6 @@ while game != 'no':
     # determines the outcome
     player.determine_winner(dealer)
     if the_gambler == 'yes':
-        # print('test worked')
         if player.win == 1:
             you.won_bet()
         else:
